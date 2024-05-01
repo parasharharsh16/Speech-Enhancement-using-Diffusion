@@ -9,6 +9,11 @@ import torch.nn.functional as F
 import wandb
 import matplotlib.pyplot as plt
 import soundfile as sf
+from sceduler import *
+
+
+
+
 #function to load the data to dataloder
 def load_data(dataset_path, mode, batch_size):
     dataset = VCTKDataset(dataset_path, mode, sample_size=sample_size, train_ratio=train_ratio)
@@ -25,12 +30,15 @@ def compute_mse(spectrogram1, spectrogram2):
     
     return mse
 
-def get_loss(model, noise, clean, t, device):
-    clean_stft, _ = get_stft(clean)
-    noise_stft, _ = get_stft(noise)
+def get_loss(model, noise_wave, clean_wave, t, device):
+
+    noisy_wave = forward_diffusion_sample(clean_wave,noise_wave, t)
+    clean_stft, _ = get_stft(clean_wave)
+    noisy_stft, _ = get_stft(noisy_wave)
     #clean, noisy = forwad_diff(clean_stft, noise_stft, t, device)
+    
     clean_stft = torch.tensor(clean_stft).to(device)
-    noisy_stft = torch.tensor(noise_stft).to(device)
+    noisy_stft = torch.tensor(noisy_stft).to(device)
     clean = clean_stft.unsqueeze(1)
     noisy = noisy_stft.unsqueeze(1)
     
@@ -44,34 +52,34 @@ def train(model,learning_rate,train_loader,epochs,batch_size,device):
     model.to(device)
     optimizer = Adam(model.parameters(), lr=learning_rate)
     
-    wandb.init(
-    # set the wandb project where this run will be logged
-    project="Speech Enhancement using Diffusion",
-    # track hyperparameters and run metadata
-    config={
-    "learning_rate": lr,
-    "architecture": "U-NET",
-    "dataset": "VCTK-Corpus",
-    "Noise": "Environmental Noise",
-    "epochs": epochs,
-    "batch_size": batch_size,
-    "train_ratio": train_ratio,
-    "sample_size": f"{sample_size*100}%",
-    "sample_items": len(train_loader)
-    }
-    )
+    # wandb.init(
+    # # set the wandb project where this run will be logged
+    # project="Speech Enhancement using Diffusion",
+    # # track hyperparameters and run metadata
+    # config={
+    # "learning_rate": lr,
+    # "architecture": "U-NET",
+    # "dataset": "VCTK-Corpus",
+    # "Noise": "Environmental Noise",
+    # "epochs": epochs,
+    # "batch_size": batch_size,
+    # "train_ratio": train_ratio,
+    # "sample_size": f"{sample_size*100}%",
+    # "sample_items": len(train_loader)
+    # }
+    # )
     for epoch in range(epochs):
         pbar = tqdm(train_loader, desc=f"Training Epochs {epoch+1}")
         for batch in pbar:
             clean, noise = batch
             batch_size = clean.shape[0]
             optimizer.zero_grad()
-            t = torch.randint(0, 10, (batch_size,), device='cpu').long()
+            t = torch.randint(0, T, (batch_size,), device='cpu').long()
             loss,_ = get_loss(model, noise,clean, t,device)
             loss.backward()
             optimizer.step()
             pbar.set_postfix({'loss': loss.item()})
-        wandb.log({"Train loss": loss.item()})
+        #wandb.log({"Train loss": loss.item()})
     return model
 
 #evaluate model
@@ -87,7 +95,7 @@ def evaluate(model, test_loader, device):
         for batch in eval_pbar:
             clean, noise = batch
             batch_size = clean.shape[0]
-            t = torch.randint(0, 10, (batch_size,), device='cpu').long()
+            t = torch.randint(0, T, (batch_size,), device='cpu').long()
             loss,pred = get_loss(model, noise,clean, t,device)
             total_loss += loss.item()
             predictions.append(pred)

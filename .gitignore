@@ -1,1 +1,6 @@
 .venv/
+venv
+data/VCTK-Corpus
+wandb
+__pycache__
+models/model*

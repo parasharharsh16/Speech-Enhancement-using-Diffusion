@@ -33,8 +33,8 @@ To download the "VCTK-Corpus" dataset, please follow the below link:
 2. Run the main script: `python main.py`
 
 ### Results
-- Training results can be viewed using [wandb.ai](https://wandb.ai/m22aie/Speech%20Enhancement%20using%20Diffusion?nw=nwuserpscss)
-- `output/wav` folder contains generated cleaned audio files
+- Training results can be viewed using [wandb.ai](https://wandb.ai/m22aie/Speech%20Enhancement%20using%20Diffusion?nw=nwuserpscss).
+- `output/wav` folder contains generated cleaned audio files.
 - `output/spectogram` folder contains spectograms from a random test set. 
 
 ## Team Members

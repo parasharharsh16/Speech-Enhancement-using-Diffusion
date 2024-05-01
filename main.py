@@ -13,17 +13,22 @@ else:
     model.load_state_dict(torch.load(save_model_path))
 
 test_loader = load_data(dataset_path, "test", batch_size=1)
-for clean, noise in test_loader:
-    print(clean.shape)
-    print(noise.shape)
-    break
 
 
-predictions,inputwave, test_loss = evaluate(model, test_loader, device)
+results,simlarity_score,similarity_noisy,test_loss = evaluate(model, test_loader, device)
+
 print(f"Test Loss: {test_loss}")
+print(f"Similarity Score: {simlarity_score}")
+# print(f"Similarity Score Noisy: {similarity_noisy}")
+
 #save samples
-save_samples(predictions,inputwave)
+save_samples_and_spectogram(results)
+#get random 3 index from the precitions
 
-#save sample
-#convert_to_audio(predictions,hop_length=512)
-
+# for i in plot_indexes:
+#     clean_wave, _ = test_loader.dataset.__getitem__(i)#predictions[i].squeeze().numpy()
+#     noisy_wave = inputwave[i].squeeze().numpy()
+#     pred = predictions[0].squeeze(0).squeeze(0)
+#     pred = pred.detach().cpu().numpy()
+#     enhanced_wave = invert_stft_to_audio(pred,noisy_wave, hop_length=512)#Get Spectograms
+#     plot_spectrograms(clean_wave, noisy_wave, enhanced_wave,i,sr=sampling_rate)

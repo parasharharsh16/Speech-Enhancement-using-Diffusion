@@ -4,4 +4,4 @@ data/VCTK-Corpus
 wandb
 __pycache__
 models/model*
-output/sample*
+output/wav/sample*

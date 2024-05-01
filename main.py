@@ -14,16 +14,11 @@ else:
     model.load_state_dict(torch.load(save_model_path))
 
 test_loader = load_data(dataset_path, "test", batch_size=1)
-for clean, noise in test_loader:
-    print(clean.shape)
-    print(noise.shape)
-    break
 
+results,simlarity_score,similarity_noisy,test_loss = evaluate(model, test_loader, device)
 
-predictions, inputwave, test_loss = evaluate(model, test_loader, device)
 print(f"Test Loss: {test_loss}")
-# save samples
-save_samples(predictions, inputwave)
+print(f"Similarity Score: {simlarity_score}")
 
-# save sample
-# convert_to_audio(predictions,hop_length=512)
+#save samples
+save_samples_and_spectogram(results)

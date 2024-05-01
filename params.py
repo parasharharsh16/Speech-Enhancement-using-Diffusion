@@ -11,5 +11,5 @@ n_fft = 2048
 hop_length = 512
 save_model_path = f'models/model_{sample_size}.pth'
 save_sample_path = 'sample'
-
+T = 5
 noise_path = 'data/noise'

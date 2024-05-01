@@ -13,6 +13,12 @@ else:
     model.load_state_dict(torch.load(save_model_path))
 
 test_loader = load_data(dataset_path, "test", batch_size=1)
+for clean, noise in test_loader:
+    print(clean.shape)
+    print(noise.shape)
+    break
+
+
 predictions,inputwave, test_loss = evaluate(model, test_loader, device)
 print(f"Test Loss: {test_loss}")
 #save samples

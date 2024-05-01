@@ -20,7 +20,7 @@ To install and run this project, follow these steps:
 4. Activate conda environment ```conda activate ./.venv```
 3. Install the required dependencies: ```pip install -r requirements.txt```
 4. Download models from the links provided below and place them inside models folder. NB - don't change the name of model files.
-5. Change mode to test in params.py to run just evaluations(test).
+5. Change `mode` to test in `params.py` to run just evaluations(test).
 
 ### Prepare Dataset
 To download the "VCTK-Corpus" dataset, please follow the below link:
@@ -33,7 +33,6 @@ To download the "VCTK-Corpus" dataset, please follow the below link:
 2. Run the main script: `python main.py`
 
 ### Results
-- The results are in the `evaluations` folder
 - `output/wav` folder contains generated cleaned audio files
 - `output/spectogram` folder contains spectograms from a random test set. 
 

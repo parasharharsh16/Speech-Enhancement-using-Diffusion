@@ -7,7 +7,7 @@ This project is build intended to submit as Major Project for Speech Understandi
 
 | % Data Trained On | Model Name        | Download Link                                            |
 |-------------------|-------------------|----------------------------------------------------------|
-| <span rowspan="4">1%</span> | Model on 20% data         | [Download](https://drive.google.com/file/d/1-xkDA620XwlOrHlciGdc2QwTVNSFgoDQ/view?usp=sharing)   |
+| <span rowspan="4">20%</span> | Model on 20% data         | [Download](https://drive.google.com/file/d/1-xkDA620XwlOrHlciGdc2QwTVNSFgoDQ/view?usp=sharing)   |
 
 
 ## Project Setup and Uses Steps
